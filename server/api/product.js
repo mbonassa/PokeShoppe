@@ -16,8 +16,7 @@ router.get('/', (req, res, next) => {
 
 // Specific product
 router.get('/:id', (req, res, next) => {
-  const id = req.params.id ? req.params.id : res.sendStatus(500);
-  Product.findById(id)
+  Product.findById(req.params.id)
   .then(product => {
     product ?    // checking if the given id return a real product from the DB
     res.json(product) :  // if so it will send it back
@@ -30,26 +29,29 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   Product.create(req.body)
   .then(createdProduct => {
-    res.json(createdProduct);
+    res.status(201).json(createdProduct);
   })
   .catch(next);
 });
 
 // Update an existing product
 router.put('/:id', (req, res, next) => {
-  const id = req.params.id ? req.params.id : res.sendStatus(500);
-  Product.update(id)
-  .then(updatedProduct => {
-    res.json(updatedProduct);
+  Product.update(req.body, {
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(result => {
+    res.json(result);
   })
   .catch(next);
 });
 
 // Get all products with this categoryId
 router.get('/:categoryId', (req, res, next) => {
-    const id = req.params.categoryId ? req.params.categoryId : res.sendStatus(500);
-    Product.findAll({
-      where: {categoryId: id}
+    Category.findById(req.params.categoryId)
+    .then(category => {
+      return category.getProducts()
     })
     .then(products => {
       res.json(products);

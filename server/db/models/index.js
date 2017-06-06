@@ -9,8 +9,8 @@ const orderProduct = require('./order_product');
 User.hasMany(Order);
 Order.belongsTo(User);
 
-Order.hasMany(Product, {through: orderProduct});
-Product.hasMany(Order, {through: orderProduct});
+Order.belongsToMany(Product, {through: orderProduct});
+Product.belongsToMany(Order, {through: orderProduct});
 
 Review.belongsTo(Product);
 Product.hasMany(Review);

@@ -23,5 +23,6 @@ module.exports = {
 	Order,
 	Product,
 	Review,
-	User
+	User,
+	orderProduct
 };

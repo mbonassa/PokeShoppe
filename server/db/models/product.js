@@ -3,7 +3,7 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-module.exports = db.define('product', {
+const Product = db.define('product', {
   name: {
     type: Sequelize.STRING,
     allowNull: false
@@ -30,3 +30,5 @@ module.exports = db.define('product', {
     type: Sequelize.STRING
   }
 });
+
+module.exports = Product;

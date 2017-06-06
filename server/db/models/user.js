@@ -9,7 +9,7 @@ const setSaltAndPassword = user => {
   }
 };
 
-module.exports = db.define('user', {
+const User = db.define('user', {
   name: {
     type: Sequelize.STRING(32)
   },
@@ -57,3 +57,5 @@ module.exports = db.define('user', {
     beforeUpdate: setSaltAndPassword
   }
 });
+
+module.exports = User;

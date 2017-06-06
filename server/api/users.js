@@ -16,18 +16,25 @@ router.params('userId', (req, res, next, id) => {
 
 /****-----   Root    -----*****/
 router.get('/', (req, res, next) => {
+  //login -- to revise later
   if(Object.keys(req.query).length){
     User.findOne({
-      where: req.query
+      where: {
+        email: req.query[email],
+        password: req.query[password]
+      }
     })
       .then(user => res.status(200).json(user))
       .catch(next);
+  //get all users
   } else{
     User.findAll()
       .then(users => res.status(200).json(users))
       .catch(next);
   }
 });
+
+/****-----   Create User    -----*****/
 router.post('/', (req, res, next) => {
   User.create(req.body)
     .then(user => res.status(201).json(user))
@@ -48,7 +55,7 @@ router.get('/orders/:userId', (req, res, next) => {
   Order.findAll({
     where: {
       userId: req.user.id,
-      status: 'CLOSED'
+      cart: 'NO'
     }
   })
     .then(orderList => res.status(200).json(orderList))
@@ -61,7 +68,7 @@ router.get('/orders/:userId', (req, res, next) => {
   Order.findAll({
     where: {
       userId: req.user.id,
-      status: 'ACTIVE'
+      cart: 'YES'
     }
   })
     .then(orderList => res.status(200).json(orderList))
@@ -70,15 +77,17 @@ router.get('/orders/:userId', (req, res, next) => {
 
 
 /****-----   User Info    -----*****/
-// name
-router.get('/name/:userId', (req, res, next) => {
-  res.status(200).json(req.user.name);
-});
+// // get user's name
+// router.get('/name/:userId', (req, res, next) => {
+//   res.status(200).json(req.user.name);
+// });
 
-// email
-router.get('/email/:userId', (req, res, next) => {
-  res.status(200).json(req.user.email);
-});
+// // get user's email
+// router.get('/email/:userId', (req, res, next) => {
+//   res.status(200).json(req.user.email);
+// });
+
+
 router.put('/email/:userId', (req, res, next) => {
   req.user.update({
     email: req.body.email
@@ -96,10 +105,11 @@ router.put('/status/:userId', (req, res, next) => {
     .catch(next);
 });
 
-// paswordReset
+// pasword_reset
 router.put('/passwordreset/:userId'(req, res, next) => {
+//!!! Only admin can do that -- need to make sure that's the case !!!
   req.user.update({
-    passwordreset: req.body.passwordreset
+    password_reset: req.body.password_reset
   })
     .then(() => res.status(204).send('Updated Successfully'))
     .catch(next);

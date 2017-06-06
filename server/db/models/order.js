@@ -7,13 +7,14 @@ const Order = db.define('order', {
     },
     status: {
         type: Sequelize.ENUM('CREATED', 'PROCESSING', 'CANCELED', 'COMPLETED'),
-        allowNull: false,
-        defaultValue: 'CREATED'
+        validate: {
+            allowNull: this.cart === 'NO' ? false : true
+        }
     },
     address: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING,
         validate: {
-            allowNull: this.cart === 'YES' ? true : false
+            allowNull: this.cart === 'NO' ? false : true
         }
     }
 });

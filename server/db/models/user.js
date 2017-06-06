@@ -9,8 +9,11 @@ const setSaltAndPassword = user => {
   }
 };
 
-module.exports = db.define('user', {
-  type:{
+const User = db.define('user', {
+  name: {
+    type: Sequelize.STRING(32)
+  },
+  type: {
     type: Sequelize.ENUM('ADMIN','BASIC'),
     defaultValue: 'BASIC'
   },
@@ -27,6 +30,13 @@ module.exports = db.define('user', {
   },
   googleId: {
     type: Sequelize.STRING
+  },
+  photo: {
+    type: Sequelize.STRING
+  },
+  password_reset: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 }, {
   instanceMethods: {
@@ -47,3 +57,5 @@ module.exports = db.define('user', {
     beforeUpdate: setSaltAndPassword
   }
 });
+
+module.exports = User;

@@ -10,6 +10,10 @@ const setSaltAndPassword = user => {
 };
 
 module.exports = db.define('user', {
+  type:{
+    type: Sequelize.ENUM('ADMIN','BASIC'),
+    defaultValue: 'BASIC'
+  },
   email: {
     type: Sequelize.STRING,
     unique: true,

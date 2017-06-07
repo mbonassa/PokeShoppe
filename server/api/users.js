@@ -4,7 +4,7 @@ const Order = require('../db/models/order');
 
 module.exports = router;
 
-router.params('userId', (req, res, next, id) => {
+router.param('userId', (req, res, next, id) => {
   User.findById(id)
     .then(user => {
       req.user = user;
@@ -44,7 +44,7 @@ router.post('/', (req, res, next) => {
 
 /****-----   Delete User    -----*****/
 router.delete('/:userId', (req, res, next) => {
-  req.user.delete()
+  req.user.destroy()
     .then(() => res.status(204).send('User Deleted!'))
     .catch(next);
 })
@@ -106,7 +106,7 @@ router.put('/status/:userId', (req, res, next) => {
 });
 
 // pasword_reset
-router.put('/passwordreset/:userId'(req, res, next) => {
+router.put('/passwordreset/:userId', (req, res, next) => {
 //!!! Only admin can do that -- need to make sure that's the case !!!
   req.user.update({
     password_reset: req.body.password_reset

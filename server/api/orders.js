@@ -3,7 +3,11 @@ const Order = require('../db/models/order');
 const Product = require('../db/models/product');
 
 router.get('/', (req, res, next) => {
-  Order.findAll()
+  Order.findAll({
+    where: req.query.status ?
+      {status: req.query.status} :
+      {}
+  })
     .then(orderList => res.status(200).json(orderList))
     .catch(next);
 });
@@ -64,4 +68,9 @@ router.delete('/products/:orderId/:productId', (req, res, next) => {
     .then(product => req.order.removeTask(product))
     .then(() => res.status(201).json(req.order))
     .catch(next);
+});
+
+// date/:orderId => get orderDate
+router.get('/date/:orderId', (req, res, next) => {
+  res.status(200).json(req.order.createdAt);
 });

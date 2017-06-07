@@ -30,6 +30,7 @@ module.exports = {
 	Product,
 	Review,
 	User,
+	Category,
 	orderProduct,
 	categoryProduct
 };

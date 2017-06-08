@@ -128,6 +128,7 @@ describe('▒▒▒ Backend tests ▒▒▒', () => {
                         })
                         .then(foundReview => {
                             expect(foundReview.description).to.be.equal("I like this thing... it is so useful I can't even take it");
+                            expect(foundReview.productId).to.be.equal(2);
                         })
                 });
             });

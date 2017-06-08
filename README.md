@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/mbonassa/PokeShoppe.png?label=ready&title=Ready)](https://waffle.io/mbonassa/PokeShoppe?utm_source=badge)
 # Boilermaker
 
 *Good things come in pairs*

@@ -123,7 +123,6 @@ describe('▒▒▒ Backend tests ▒▒▒', () => {
                         })
                         .expect(201)
                         .then(res => {
-                            console.log('RES!!!',res)
                             const createdReview = res.body;
                             return Review.findById(createdReview.id)
                         })

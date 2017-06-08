@@ -8,11 +8,12 @@ const orderProduct = db.define('orderProduct', {
     },
     price: {
         type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
         validate: {
             isDecimal: true,
-            notNull: true
+            // notNull: true
         }
     }
 })
 
-module.exports = orderProduct; 
+module.exports = orderProduct;

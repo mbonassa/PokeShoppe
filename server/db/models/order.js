@@ -7,15 +7,20 @@ const Order = db.define('order', {
     },
     status: {
         type: Sequelize.ENUM('CREATED', 'PROCESSING', 'CANCELED', 'COMPLETED'),
-        validate: {
-            allowNull: this.cart === 'NO' ? false : true
-        }
+        // allowNull: this.cart === 'NO' ? false : true,
+        // validate: {
+        //     isNull: this.cart === 'YES' ? true : false
+        // }
     },
     address: {
         type: Sequelize.STRING,
-        validate: {
-            allowNull: this.cart === 'NO' ? false : true
-        }
+        // allowNull: this.cart === 'NO' ? false : true
+        // validate: {
+        //     isNull: this.cart === 'YES' ? true : false
+        // }
+        // validate: {
+        //     allowNull: this.cart === 'NO' ? false : true
+        // }
     }
 });
 

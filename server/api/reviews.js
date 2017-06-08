@@ -16,13 +16,13 @@ router.get('/:productId', (req, res, next) => {
 })
 
 //Post a review to a specific product (from a specific user)  — /:productId
-Router.post('/:productId', (req, res, next) => {
+router.post('/:productId', (req, res, next) => {
   Review.create(req.body, {returning: true})
     .then(createdRecord => {
       return Promise.all(
         createdRecord.setProduct(req.params.productId, {returning: true}),
         createdRecord.setUser(req.body.userId, {returning: true})
-      ) 
+      )
     })
     .then(returnedArray => {
       if (!returnedArray[1]) res.sendStatus(404)

@@ -106,7 +106,7 @@ router.put('/status/:userId', (req, res, next) => {
 });
 
 // pasword_reset
-router.put('/passwordreset/:userId'(req, res, next) => {
+router.put('/passwordreset/:userId',(req, res, next) => {
 //!!! Only admin can do that -- need to make sure that's the case !!!
   req.user.update({
     password_reset: req.body.password_reset

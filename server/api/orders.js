@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
 });
 
 /****-----   Oder Specific    -----*****/
-router.params('orderId', (req, res, next, id) => {
+router.param('orderId', (req, res, next, id) => {
   Order.findById(id)
     .then(order => {
       req.order = order;

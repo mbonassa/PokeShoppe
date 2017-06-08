@@ -11,19 +11,21 @@ const Product = db.define('product', {
   description: {
     type: Sequelize.TEXT
   },
-  category: {
-    type: Sequelize.ARRAY(Sequelize.STRING),
-    defaultValue: []
-  },
+  // category: {
+  //   type: Sequelize.ARRAY(Sequelize.STRING),
+  //   defaultValue: []
+  // },
   inventory_qty: {
     type: Sequelize.INTEGER,
     defaultValue: 0
   },
   price: {
     type: Sequelize.DECIMAL(10, 2),
+    allowNull: false,
     validate: {
-      isDecimal: true,
-      notNull: true
+      isDecimal: true
+      // ,
+      // notNull: true
     }
   },
   photo: {

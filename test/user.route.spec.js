@@ -52,7 +52,6 @@ describe('▒▒▒ Backend tests user route ▒▒▒', () => {
           .expect(201)
           .expect('Content-Type', /json/)
           .expect(function(res) {
-          console.log(blue("RESRES", res));
 
           // expecting to recive back only the name and email (since we salted password )
             expect(res.body).to.include({name: 'Peter', email: 'peter.griffin.the2nd@gmail.com'});
@@ -68,24 +67,8 @@ describe('▒▒▒ Backend tests user route ▒▒▒', () => {
             .expect('Content-Type', /json/) // tests response header
 
             .expect(function(res) {
-              console.log(blue("RESRES", res.body));
               expect(res.body).to.have.length(1); // tests response body
             });
         });
-
-
-        // it('GET a single user by id', function() {
-        //   // when we make requests to `/users` we will get back an all the users (peter)
-        //   return supertest(app)
-        //     .get('/api/users?email=peter.griffin.the2nd@gmail.com&password=peter')  // makes an HTTP request: GET '/users'
-        //     .expect(200)     // tests response status code
-        //     .expect('Content-Type', /json/) // tests response header
-
-        //     .expect(function(res) {
-        //       console.log(blue("RESRES", res.body));
-        //       expect(res.body.email).to.equal('peter.griffin.the2nd@gmail.com')
-        //       .expect(res.body.password).to.e // tests response body
-        //     });
-        // });
     });
 });

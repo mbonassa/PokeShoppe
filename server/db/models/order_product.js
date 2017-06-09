@@ -10,8 +10,7 @@ const orderProduct = db.define('orderProduct', {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
         validate: {
-            isDecimal: true,
-            // notNull: true
+            isDecimal: true
         }
     }
 })

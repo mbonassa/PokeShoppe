@@ -1,36 +1,23 @@
 import React from 'react';
-import store from '../store';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { logout } from '../reducer/user';
 import Navbar from './Navbar';
 
-const mapState = (state, ownProps) => {
-  return Object.assign({}, state)
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-
-});
-
 // Component //
 
-export default class Main extends React.Component {
-  constructor () {
-    super();
-    this.state = {}
-  }
+const Main = props => {
+
   //const { children, handleClick, loggedIn } = props;
-  render(){
-    return (
-      <div>
-      <Navbar />
-        { props.children }
-      </div>
-      );
-    }
-}
+
+  return (
+    <div>
+    <Navbar />
+      { props.children }
+    </div>
+  );
+};
 
 // Main.propTypes = {
 //   children: PropTypes.object,
@@ -49,5 +36,5 @@ export default class Main extends React.Component {
 //     dispatch(logout());
 //   }
 // });
-
+export default Main
 // export default connect(mapState, mapDispatch)(Main);

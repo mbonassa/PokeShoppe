@@ -77,7 +77,7 @@ describe('▒▒▒ Backend tests for user model ▒▒▒', () => {
                         });
                 });
 
-                it('type has default value of "BASIC" ', () => {
+                it('password_reset has default value of false ', () => {
                     const user = User.build();
                     expect(user.password_reset).to.be.equal(false);
                 });

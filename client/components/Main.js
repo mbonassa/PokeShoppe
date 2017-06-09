@@ -6,8 +6,6 @@ import { Link } from 'react-router';
 import { logout } from '../reducer/user';
 import Navbar from './Navbar';
 
-import {} from '../action-creators/'
-
 const mapState = (state, ownProps) => {
   return Object.assign({}, state)
 };
@@ -21,17 +19,18 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default class Main extends React.Component {
   constructor () {
     super();
-    this.state = 
+    this.state = {}
   }
   //const { children, handleClick, loggedIn } = props;
-
-  return (
-    <div>
-    <Navbar />
-      { props.children }
-    </div>
-  );
-};
+  render(){
+    return (
+      <div>
+      <Navbar />
+        { props.children }
+      </div>
+      );
+    }
+}
 
 // Main.propTypes = {
 //   children: PropTypes.object,

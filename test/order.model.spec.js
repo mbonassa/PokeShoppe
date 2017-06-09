@@ -42,21 +42,4 @@ describe('Order Model', () => {
         });
 
     });
-
-    // describe('validation', () => {
-
-    //     it('requires a truthy status field if cart field is false', () => {
-    //     const order = Order.build({
-    //         cart: false,
-    //         status: null
-    //     });
-    //     return order.validate()
-    //         .then(err => {
-    //         expect(err).to.be.an('object');
-    //         // expect(err.errors).to.contain.a.thing.with.properties({
-    //         //     path: 'name',
-    //         //     type: 'notNull Violation'
-    //         })
-    //     })
-    // });
 });

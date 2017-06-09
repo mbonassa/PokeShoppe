@@ -9,8 +9,6 @@ chai.use(chaiProperties);
 chai.use(chaiThings);
 const expect = chai.expect;
 
-console.log(process.env.DATABASE_URL);
-
 describe('Category Model', () => {
   before(() => {
     return db.sync({force: true})
@@ -20,7 +18,7 @@ describe('Category Model', () => {
   });
   describe('definition', () => {
     it('has a name field that is a string', () => {
-      Category.findOne()
+      return Category.findOne()
         .then(category => {
           expect(category.name).to.be.a('string');
         });

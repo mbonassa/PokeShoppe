@@ -32,19 +32,19 @@ router.post('/', (req, res, next) => {
 
 
 router.put('/:categoryId', (req, res, next) => {
-  Category.update(req.body, {where: 
+  Category.update(req.body, {where:
       {id: req.params.categoryId}
     })
     .then(affectedCount => {
       if (!affectedCount[0]) res.sendStatus(400)
-      else res.sendStatus(200)
+      else res.sendStatus(201)
     })
     .catch(next);
 })
 
 
 router.delete('/:categoryId', (req, res, next) => {
-  Category.destroyById(req.params.categoryId)
+  Category.destroy({where: {id: req.params.categoryId} })
     .then(deletedCount => {
       if (!deletedCount) res.sendStatus(400)
       else res.sendStatus(200)

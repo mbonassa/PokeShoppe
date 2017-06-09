@@ -57,3 +57,13 @@ router.get('/category/:categoryId', (req, res, next) => {
     })
     .catch(next);
 });
+router.put('/category/:categoryId', (req, res, next) => {
+  Promise.all([
+    Category.findById(req.params.categoryId),
+    Product.findById(req.body.id)
+  ])
+    .then(([category, product]) => {
+      return category.addProduct(product);
+    })
+    .then(() => res.send(200).send('Successfully added category!'))
+})

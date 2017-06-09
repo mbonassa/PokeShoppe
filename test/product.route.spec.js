@@ -118,7 +118,37 @@ describe('Product Routes', () => {
             })
         })
     });
-    it('PUT adds a product to a category', () => {});
+    it('PUT adds a product to a category', done => {
+      Promise.all([
+        Category.findOne({
+          where: {
+            name: 'water'
+          }
+        }),
+        Product.create({
+          name: 'Blastoise',
+          description: 'sweeeett!',
+          inventory_qty: 4,
+          price: 50.00,
+          photo: 'http://www.blastoise.com/image'
+        })
+      ])
+        .then(([category, product]) => {
+          agent.put(`/api/products/category/${category.id}`)
+            .send(product)
+            .expect(200)
+            .end(function(err, res){
+              if(err) return done(err);
+              product.getCategories()
+                .then(categories => {
+                  expect(categories).to.be.an('array');
+                  expect(categories).to.have.a.lengthOf(1);
+                  expect(categories[0].id).to.equal(category.id);
+                  done()
+                })
+            })
+        })
+    });
   });
 
   describe('/:productId', () => {
@@ -143,7 +173,6 @@ describe('Product Routes', () => {
             .expect(200)
             .end(function(err, res){
               if(err) return done(err);
-              console.log(res.body[1]);
               expect(res.body).to.be.an('array');
               expect(res.body).to.have.a.lengthOf(2);
               expect(res.body[0]).to.equal(1);
@@ -156,5 +185,4 @@ describe('Product Routes', () => {
         })
     });
   });
-  describe('/category/:productId', () => {});
 });

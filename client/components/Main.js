@@ -1,14 +1,28 @@
 import React from 'react';
+import store from '../store';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { logout } from '../reducer/user';
 import Navbar from './Navbar';
 
+import {} from '../action-creators/'
+
+const mapState = (state, ownProps) => {
+  return Object.assign({}, state)
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+
+});
+
 // Component //
 
-const Main = props => {
-
+export default class Main extends React.Component {
+  constructor () {
+    super();
+    this.state = 
+  }
   //const { children, handleClick, loggedIn } = props;
 
   return (
@@ -36,5 +50,5 @@ const Main = props => {
 //     dispatch(logout());
 //   }
 // });
-export default Main
+
 // export default connect(mapState, mapDispatch)(Main);

@@ -19,14 +19,11 @@ router.get('/:productId', (req, res, next) => {
 router.post('/:productId', (req, res, next) => {
   Review.create(req.body, {returning: true})
     .then(createdRecord => {
-      return Promise.all(
-        createdRecord.setProduct(req.params.productId, {returning: true}),
-        createdRecord.setUser(req.body.userId, {returning: true})
-      )
+      return createdRecord.setProduct(req.params.productId, {returning: true})
     })
-    .then(returnedArray => {
-      if (!returnedArray[1]) res.sendStatus(404)
-      else res.sendStatus(201)
+    .then(updatedRecord => {
+      if (!updatedRecord) res.sendStatus(404)
+      else res.status(201).send(updatedRecord)
     })
     .catch(next);
 })

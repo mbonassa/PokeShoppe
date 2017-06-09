@@ -5,16 +5,17 @@ import { Link } from 'react-router';
 import { logout } from '../reducer/user';
 import Navbar from './Navbar';
 
+
 // Component //
 
 const Main = props => {
-
+  console.log(props.children)
   //const { children, handleClick, loggedIn } = props;
 
   return (
-    <div>
-    <Navbar />
-      { props.children }
+    <div >
+      <Navbar />
+        { props.children }
     </div>
   );
 };

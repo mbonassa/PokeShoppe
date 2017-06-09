@@ -9,6 +9,7 @@ import Navbar from './Navbar';
 
 const Main = props => {
 
+
   //const { children, handleClick, loggedIn } = props;
 
   return (

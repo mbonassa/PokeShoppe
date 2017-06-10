@@ -4,38 +4,52 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { logout } from '../reducer/user';
 import Navbar from './Navbar';
+import { fetchProducts } from '../reducer/products';
+import ProductItem from './ProductItem';
 
 // Component //
 
-const Main = props => {
+class Main extends React.Component {
 
+  constructor () {
+    super();
+  }
 
-  //const { children, handleClick, loggedIn } = props;
+  componentDidMount() {
+    this.props.onEnter()
+  }
 
-  return (
-    <div>
-    <Navbar />
-      { props.children }
-    </div>
-  );
-};
-
+  render () {
+    //const { children, handleClick, loggedIn } = props;
+    return (
+      <div>
+        <Navbar />
+        <ul>
+          {
+            this.props.products.listProducts
+              .map(product => <ProductItem product={product} key={product.id} />)
+          }
+        </ul>
+      </div>
+    );
+  };
+}
 // Main.propTypes = {
 //   children: PropTypes.object,
 //   handleClick: PropTypes.func.isRequired,
 //   loggedIn: PropTypes.bool.isRequired
 // };
 
+
 // // Container //
 
-// const mapState = ({ user }) => ({
-//   loggedIn: !!user.id
-// });
+const mapState = (state) => state;
 
-// const mapDispatch = dispatch => ({
-//   handleClick () {
-//     dispatch(logout());
-//   }
-// });
-export default Main
-// export default connect(mapState, mapDispatch)(Main);
+const mapDispatch = dispatch => ({
+  onEnter: () => {
+    return dispatch(fetchProducts())
+  },
+});
+
+export default connect(mapState, mapDispatch)(Main);
+

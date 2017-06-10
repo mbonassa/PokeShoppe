@@ -10,11 +10,9 @@ import ProductItem from './ProductItem';
 // Component //
 
 class Main extends React.Component {
+
   constructor () {
     super();
-    // this.state = {
-
-    // }
   }
 
   componentDidMount() {
@@ -23,7 +21,6 @@ class Main extends React.Component {
 
   render () {
     //const { children, handleClick, loggedIn } = props;
-    console.log(this.props)
     return (
       <div>
         <Navbar />
@@ -50,8 +47,8 @@ const mapState = (state) => state;
 
 const mapDispatch = dispatch => ({
   onEnter: () => {
-    return dispatch(fetchProducts());
-  }
+    return dispatch(fetchProducts())
+  },
 });
 
 export default connect(mapState, mapDispatch)(Main);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { fetchReviews } from '../reducer/reviews';
+import { fetchReviews } from '../reducer/review.js';
 import RatingStar from './RatingStar';
 
 /* -----------------    COMPONENT     ------------------ */
@@ -13,12 +13,12 @@ class ProductItem extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getReviews(this.props.product.id);
+        this.props.getReviews(this.props.singleProduct.id);
     }
 
     render() {
-    const product = this.props.product;
-    console.log(this.props.reviews.reviews)
+    const product = this.props.singleProduct;
+    console.log(this.props)
 
     return (
         <div className="col-sm-4 col-lg-4 col-md-4">
@@ -31,7 +31,7 @@ class ProductItem extends React.Component {
                     <p>{product.description}</p>
                 </div>
                 <div className="ratings">
-                    <p className="pull-right">{this.props.reviews.reviews.length}</p>
+                    <p className="pull-right">{this.props.review.reviews.length}</p>
                 </div>
                 <RatingStar />
             </div>

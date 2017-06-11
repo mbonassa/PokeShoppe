@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { logout } from '../reducer/user';
 import Navbar from './Navbar';
-import { fetchProducts } from '../reducer/products';
+import { fetchProducts } from '../reducer/product';
 import ProductItem from './ProductItem';
 
 // Component //
@@ -21,13 +21,14 @@ class Main extends React.Component {
 
   render () {
     //const { children, handleClick, loggedIn } = props;
+
     return (
       <div>
         <Navbar />
         <ul>
           {
-            this.props.products.listProducts
-              .map(product => <ProductItem product={product} key={product.id} />)
+            this.props.product.listProducts
+              .map(product => <ProductItem singleProduct={product} key={product.id} />)
           }
         </ul>
       </div>

@@ -2,7 +2,7 @@
 // const db = require('./server/db');
 const db = require('./server/db/db');
 // const db = require('./server/db/models').db;
-const blue = require('chalk').blue;
+// const blue = require('chalk').blue;
 
 var Promise = require('bluebird');
 // const blue = require('chalk').Blue;
@@ -97,10 +97,10 @@ db.sync({force: true})
 })
 .then(function () {
   console.log('Finished inserting Orders');
-  console.log(blue(data.categories));
+  // console.log(blue(data.categories));
   const addingCategories = Promise.map(data.categories, function (category) {
     console.dir(category);
-    console.log(blue(category));
+    // console.log(blue(category));
     return Category.create(category);
   })
   return addingCategories;

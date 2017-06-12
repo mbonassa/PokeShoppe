@@ -6,10 +6,8 @@ import Navbar from './Navbar';
 const Main = (props) => {
   return (
     <div>
-    <Navbar />
-      <div className="tempNav">
-        {props.children}
-      </div>
+      <Navbar />
+      {props.children}
     </div>
   )
 }

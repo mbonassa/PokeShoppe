@@ -9,7 +9,7 @@
     "start-server": "nodemon server",
     "build-client": "webpack",
     "test": "DATABASE_URL='postgres://localhost:5432/pokeshop-test' NODE_ENV=development mocha -w ./**/*.spec.js --compilers js:babel-register",
-    "react-test": "mocha ./test/redux_tests --watch --compilers js:babel-register"
+    "react-test": "mocha ./test/react_tests --watch --compilers js:babel-register"
   },
   "author": "",
   "license": "ISC",

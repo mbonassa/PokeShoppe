@@ -7,17 +7,17 @@ const GET_CART = 'GET_CART';
 const ADD_TO_CART = 'ADD_TO_CART';
 
 // ------ ACTION CREATORS -------
-const getProducts = products => ({ type: GET_PRODUCTS, products });
-const singleProduct = product => ({ type: GET_SINGLE_PRODUCT, product });
-const fetchingCart = cart => ({ type: GET_CART, cart });
-const addingToCart = product => ({ type: ADD_TO_CART, product })
+export const getProducts = products => ({ type: GET_PRODUCTS, products });
+export const singleProduct = product => ({ type: GET_SINGLE_PRODUCT, product });
+export const fetchingCart = cart => ({ type: GET_CART, cart });
+export const addingToCart = product => ({ type: ADD_TO_CART, product })
 
 // ------- INIT STATE --------
 const initialProductState = {
   listProducts: [],
   product: {},
   cart: {},
-  listCart: []
+  cartProducts: []
 }
 
 
@@ -25,6 +25,7 @@ const initialProductState = {
 export default function reducer (state = initialProductState, action) {
 
   const newState = Object.assign({}, state);
+  newState.cartProducts = newState.cartProducts.slice();
 
   switch (action.type) {
     case GET_PRODUCTS:
@@ -40,7 +41,7 @@ export default function reducer (state = initialProductState, action) {
       break;
 
     case ADD_TO_CART:
-      newState.listCart.push(action.product)
+      newState.cartProducts.push(action.product)
       break;
 
     default:

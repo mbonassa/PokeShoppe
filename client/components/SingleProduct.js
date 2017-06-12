@@ -2,7 +2,8 @@ import React from 'react';
 import {Link} from 'react-router';
 import { connect } from 'react-redux';
 
-//import { buyProduct } from '../reducers/singleProduct';
+import { fetchProduct } from '../reducer/product';
+//import { buyProduct } from '???';
 
 
 /* -----------------    COMPONENT     ------------------ */
@@ -12,23 +13,26 @@ class SingleProduct extends React.Component {
     this.state = {
 
     }
-
+    this.onProductClick = this.onProductClick.bind(this);
   }
   render(){
+    console.log('PRODUCT.PRODUCT', this.props.selectedProduct)
+    const product = this.props.selectedProduct;
     return(
     <div className="row clearfix">
 
       <div className="col-sm-4 col-lg-4 col-md-4">
           <div className="thumbnail">
-              <img src="http://placehold.it/320x150" alt="" />
+              <img src={product.photo} alt="http://placehold.it/320x150" />
               <div className="caption">
-                  <h4 className="pull-right">$24.99</h4>
-                  <h4><a href="#">First Product</a>
+                  <h4 className="pull-right">{product.price}</h4>
+                  <h4><a href="#">{product.name}</a>
                   </h4>
-                  <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
+                  <p>{product.description}</p>
+                  <button onClick={this.onProductClick} type="button" class="btn btn-primary btn-sm pull-right">Buy {product.name}!</button>
               </div>
               <div className="ratings">
-                  <p className="pull-right">15 reviews</p>
+                  <p className="pull-right">? reviews</p>
                   <p>
                       <span className="glyphicon glyphicon-star"></span>
                       <span className="glyphicon glyphicon-star"></span>
@@ -42,24 +46,32 @@ class SingleProduct extends React.Component {
     </div>
     )}
   onProductClick(){
-    this.props.purchaseItem(this.props.selectedCampus.id);
+    // this.props.purchaseItem(this.props.selectedProduct.id);
 
   }
+
+  componentDidMount(){
+    this.props.loadProduct(this.props.params.id);
+  }
+
 }
 
 
 /* -----------------    CONTAINER     ------------------ */
 function mapStateToProps(state){
-  //console.log('STATE',state.products)
+  console.log('SINGLE PRODUCT STATE',state.product)
   return {
-    //selectedProduct: state.products.selectedProduct
+    selectedProduct: state.product.product
   }
 }
 
 function mapDispatchToProps(dispatch){
   return {
-    // purchaseItem: (id, user) => {
-    //   dispatch(buyProduct(id, user))
+    loadProduct: (id) => {
+      dispatch(fetchProduct(id));
+    },
+    // purchaseItem: (id) => {
+    //   dispatch(buyProduct(id));
     // }
   }
 }

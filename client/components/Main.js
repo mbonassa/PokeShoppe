@@ -24,7 +24,6 @@ class Main extends React.Component {
 
   render (props) {
     //const { children, handleClick, loggedIn } = props;
-    console.log('PROPS', this.props)
     return (
       <div>
         <Navbar />

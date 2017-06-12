@@ -30,12 +30,15 @@ ReactDOM.render(
         <Route path="products/:id" component={SingleProduct} />
         <Route path="login" component={Login} />
         <Route path="signup" component={Signup} />
+        <Route path="dashboard" />
         <IndexRedirect to="products" />
       </Route>
     </Router>
   </Provider>,
   document.getElementById('app')
 );
+
+    // <Route onEnter={requireLogin}>
     // <Route onEnter={requireLogin}>
     //       <Route path="home" component={UserHome} />
     //     </Route>

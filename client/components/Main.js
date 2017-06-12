@@ -6,7 +6,7 @@ import Navbar from './Navbar';
 const Main = (props) => {
   return (
     <div>
-      <Navbar />
+    <Navbar />
       <div className="tempNav">
         {props.children}
       </div>

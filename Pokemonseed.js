@@ -16,7 +16,13 @@ const categoryProduct = require('./server/db/models').categoryProduct
 
 const data = {
   users: [
-    {name: 'Peter', email: 'peter.griffin.the2nd@gmail.com', password: 'peter'}, {name: 'Lois', email: 'lois.griffin.the2nd@gmail.com', password: 'lois'}, {name: 'Meg', email: 'meg.griffin.the2nd@gmail.com', password: 'meg'}, {name: 'Chris', email: 'chris.griffin.the2nd@gmail.com', password: 'chris'}, {name: 'Stewie', email: 'stewie.griffin.the2nd@gmail.com', password: 'stewie'}, {name: 'Brian', email: 'brian.griffin.the2nd@gmail.com', password: 'brian'}
+    {name: 'Peter', email: 'peter.griffin.the2nd@gmail.com', password: 'peter'},
+    {name: 'Lois', email: 'lois.griffin.the2nd@gmail.com', password: 'lois'},
+    {name: 'Meg', email: 'meg.griffin.the2nd@gmail.com', password: 'meg'},
+    {name: 'Chris', email: 'chris.griffin.the2nd@gmail.com', password: 'chris'},
+    {name: 'Stewie', email: 'stewie.griffin.the2nd@gmail.com', password: 'stewie'},
+    {name: 'Brian', email: 'brian.griffin.the2nd@gmail.com', password: 'brian'},
+    {name: 'Ash', email: 'ketchum@all.com', password: 'pikachu', type: 'ADMIN'}
   ],
   products: [
     {name: 'Pikachu', description:  'Pika-pika-pikachu', inventory_qty: 10, price: 99.99, photo: 'https://cdn.bulbagarden.net/upload/thumb/0/0d/025Pikachu.png/250px-025Pikachu.png' },

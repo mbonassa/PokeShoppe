@@ -28,6 +28,12 @@ class Navbar extends React.Component {
                       <li>
                           <a href="#">Contact</a>
                       </li>
+                      <li>
+                        <Link to="login">Login</Link>
+                      </li>
+                      <li>
+                        <Link to="signup">SignUp</Link>
+                      </li>
                       {this.props.user.type === 'ADMIN' && <li><Link to="dashboard">Admin Dashboard</Link></li>}
                   </ul>
                   <form className="navbar-form navbar-left">

@@ -6,25 +6,28 @@ import { logout } from '../reducer/user';
 import Navbar from './Navbar';
 import { fetchProducts } from '../reducer/product';
 import ProductItem from './ProductItem';
+import SingleProduct from './SingleProduct';
 
 // Component //
 
+
 class Main extends React.Component {
 
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
+
   }
 
   componentDidMount() {
     this.props.onEnter()
   }
 
-  render () {
+  render (props) {
     //const { children, handleClick, loggedIn } = props;
-
     return (
       <div>
         <Navbar />
+        {this.props.children}
         <ul>
           {
             this.props.product.listProducts
@@ -33,8 +36,9 @@ class Main extends React.Component {
         </ul>
       </div>
     );
-  };
+  }
 }
+
 // Main.propTypes = {
 //   children: PropTypes.object,
 //   handleClick: PropTypes.func.isRequired,

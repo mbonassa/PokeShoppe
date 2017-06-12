@@ -3,9 +3,10 @@ import './index.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+import { Router, Route, browserHistory, IndexRoute, IndexRedirect } from 'react-router';
 import store from './store';
 import { Main, Login, Signup, UserHome, SingleProduct } from './components';
+import ProductListContainer from './containers/ProductListContainer';
 import { me } from './reducer/user';
 
 const whoAmI = store.dispatch(me());
@@ -25,9 +26,11 @@ ReactDOM.render(
     <Router history={browserHistory}>
       <Route path="/" component={Main}>
         <IndexRoute component={Main} />
+        <Route path="products" component={ProductListContainer} />
         <Route path="products/:id" component={SingleProduct} />
         <Route path="login" component={Login} />
         <Route path="signup" component={Signup} />
+        <IndexRedirect to="products" />
       </Route>
     </Router>
   </Provider>,

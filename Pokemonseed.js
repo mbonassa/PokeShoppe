@@ -45,12 +45,12 @@ const data = {
     {name: 'Mew', description: 'Mew-woof woof', inventory_qty: 13, price: 9.99, photo: 'https://cdn.bulbagarden.net/upload/thumb/b/b1/151Mew.png/250px-151Mew.png'},
   ],
   orders: [
-    {cart: 'NO', status: 'PROCESSING', address: '560 west 40rd street', userId: 1 },
-    {cart: 'NO', status: 'CANCELED', address: '560 west 34th street', userId: 2 },
-    {cart: 'NO', status: 'COMPLETED', address: '560 west 23rd street', userId: 3 },
-    {cart: 'NO', status: 'CREATED', address: '560 west 21st street', userId: 4 },
-    {cart: 'YES', status: null, address: '560 west 43rd street', userId: 5 },
-    {cart: 'YES', address: '560 west 43rd street' }
+    {cart: false, status: 'PROCESSING', address: '560 west 40rd street', userId: 1 },
+    {cart: false, status: 'CANCELED', address: '560 west 34th street', userId: 2 },
+    {cart: false, status: 'COMPLETED', address: '560 west 23rd street', userId: 3 },
+    {cart: false, status: 'CREATED', address: '560 west 21st street', userId: 4 },
+    {cart: true, status: null, address: '560 west 43rd street', userId: 5 },
+    {cart: true, address: '560 west 43rd street' }
   ],
   categories: [
     {name: 'Grass'}, { name: 'Fire' }, { name: 'Water' }, { name: 'Bug' }, { name: 'Dark' }, { name: 'Ground' }, { name: 'Dragon' }, { name: 'Ice' }, { name: 'Electric' }, { name: 'Normal' }, { name: 'Fairy' }, { name: 'Poison' }, { name: 'Fighting' }, { name: 'Psychic' }, { name: 'Rock' }, { name: 'Flying' }, { name: 'Steel' }, { name: 'Ghost' }

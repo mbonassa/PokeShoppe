@@ -6,7 +6,7 @@ module.exports = router;
 
 // All products
 router.get('/', (req, res, next) => {
-  Product.findAll()
+  Product.findAll({where: req.query})
   .then(products => {
     res.json(products);
   })
@@ -18,9 +18,7 @@ router.get('/', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   Product.findById(req.params.id)
   .then(product => {
-    product ?    // checking if the given id return a real product from the DB
-    res.json(product) :  // if so it will send it back
-    res.sendStatus(404);  // page not found
+    res.json(product);
   })
   .catch(next);
 });
@@ -39,7 +37,8 @@ router.put('/:id', (req, res, next) => {
   Product.update(req.body, {
     where: {
       id: req.params.id
-    }
+    },
+    returning: true
   })
   .then(result => {
     res.json(result);
@@ -48,7 +47,7 @@ router.put('/:id', (req, res, next) => {
 });
 
 // Get all products with this categoryId
-router.get('/:categoryId', (req, res, next) => {
+router.get('/category/:categoryId', (req, res, next) => {
     Category.findById(req.params.categoryId)
     .then(category => {
       return category.getProducts()
@@ -58,7 +57,13 @@ router.get('/:categoryId', (req, res, next) => {
     })
     .catch(next);
 });
-
-
-
-
+router.put('/category/:categoryId', (req, res, next) => {
+  Promise.all([
+    Category.findById(req.params.categoryId),
+    Product.findById(req.body.id)
+  ])
+    .then(([category, product]) => {
+      return category.addProduct(product);
+    })
+    .then(() => res.send(200).send('Successfully added category!'))
+})

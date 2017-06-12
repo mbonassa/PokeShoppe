@@ -12,7 +12,7 @@ router.get('/:productId', (req, res, next) => {
     .then(foundReviews => {
       res.json(foundReviews)
     })
-    .catch(next)
+    .catch(next);
 })
 
 //Post a review to a specific product (from a specific user)  — /:productId

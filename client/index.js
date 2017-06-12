@@ -6,7 +6,10 @@ import { Provider } from 'react-redux';
 import { Router, Route, browserHistory, IndexRoute, IndexRedirect } from 'react-router';
 import store from './store';
 import { Main, Login, Signup, UserHome, SingleProduct } from './components';
+
 import ProductListContainer from './containers/ProductListContainer';
+
+import AdminContainer from './containers/AdminContainer';
 import { me } from './reducer/user';
 
 const whoAmI = store.dispatch(me());
@@ -30,7 +33,7 @@ ReactDOM.render(
         <Route path="products/:id" component={SingleProduct} />
         <Route path="login" component={Login} />
         <Route path="signup" component={Signup} />
-        <Route path="dashboard" />
+        <Route path="dashboard"  component={AdminContainer} />
         <IndexRedirect to="products" />
       </Route>
     </Router>

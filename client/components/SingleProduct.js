@@ -16,7 +16,6 @@ class SingleProduct extends React.Component {
     this.onProductClick = this.onProductClick.bind(this);
   }
   render(){
-    console.log('PRODUCT.PRODUCT', this.props.selectedProduct)
     const product = this.props.selectedProduct;
     return(
     <div className="row clearfix">
@@ -59,7 +58,6 @@ class SingleProduct extends React.Component {
 
 /* -----------------    CONTAINER     ------------------ */
 function mapStateToProps(state){
-  console.log('SINGLE PRODUCT STATE',state.product)
   return {
     selectedProduct: state.product.product
   }

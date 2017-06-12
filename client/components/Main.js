@@ -7,9 +7,7 @@ const Main = (props) => {
   return (
     <div>
       <Navbar />
-      <div className="tempNav">
-        {props.children}
-      </div>
+      {props.children}
     </div>
   )
 }

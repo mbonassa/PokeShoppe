@@ -3,6 +3,18 @@ const Order = require('../db/models/order');
 const Product = require('../db/models/product');
 module.exports = router;
 
+// create if not exist, then send instance
+router.put('/:userId', (req, res, next) => {
+  Order.findOrCreate({where: {
+    cart: true,
+    userId: req.params.userId
+  }})
+  .then(instance => {
+    return res.json(instance[0])
+  })
+  .catch(next);
+})
+
 router.get('/', (req, res, next) => {
   Order.findAll({
     where: req.query.status ?
@@ -13,65 +25,101 @@ router.get('/', (req, res, next) => {
     .catch(next);
 });
 
-/****-----   Oder Specific    -----*****/
-router.param('orderId', (req, res, next, id) => {
-  Order.findById(id)
-    .then(order => {
-      req.order = order;
-      next();
+router.put('/products/:orderId/:productId', (req, res, next) => {
+  Order.findOne({
+    where: {
+      cart: true,
+      id: req.params.orderId
+    }
+  })
+  .then(order => {
+    Product.findOne(req.params.productId)
+    .then(product => {
+      order.addProduct(product);
     })
-    .catch(next);
-});
-
-
-// :orderId => get order
-router.get('/:orderId', (req, res, next) => {
-  res.status(200).json(req.order);
-});
-
-// status/:orderId => get/update address
-router.get('/status/:orderId', (req, res, next) => {
-  res.status(200).json(req.order.status);
-});
-router.put('/status/:oderId', (req, res, next) => {
-  req.order.update({
-    status: req.body.status
+    .then(product => {
+      res.json(product);
+    })
   })
-    .then(() => res.status(204).send('Updated Successfully!'))
-    .catch(next);
+  .catch(next)
 });
 
-// address/:orderId => get/update address
-router.get('/address/:orderId', (req, res, next) => {
-  res.status(200).json(req.order.address);
-});
-router.put('/address/:orderId', (req, res, next) => {
-  req.order.update({
-    address: req.body.address
-  })
-    .then(() => res.status(204).send('Updated Successfully!'))
-    .catch(next);
-});
 
-// products/:orderId => get/update/delete product
-router.get('/products/:orderId', (req, res, next) => {
-  req.order.getProducts()
-    .then(productList => res.status(200).json(productList))
-    .catch(next);
-});
-router.put('/products/:orderId', (req, res, next) => {
-  req.order.addProduct(req.body.product)
-    .then(() => res.status(201).json(req.order))
-    .catch(next);
-});
-router.delete('/products/:orderId/:productId', (req, res, next) => {
-  Product.findById(req.params.productId)
-    .then(product => req.order.removeTask(product))
-    .then(() => res.status(201).json(req.order))
-    .catch(next);
-});
+  // req.ord.addProduct(req.body.product)
+  //   .then(() => {
+  //     res.status(201);
+  //     Product.findOne({where: req.body.product});
+  //   })
+  //   .then(product => {
+  //     res.json(product);
+  //   })
+  //   .catch(next);
 
-// date/:orderId => get orderDate
-router.get('/date/:orderId', (req, res, next) => {
-  res.status(200).json(req.order.createdAt);
-});
+
+// /****-----   Order Specific    -----*****/
+// router.param('orderId', (req, res, next, id) => {
+//   Order.findById(id)
+//     .then(order => {
+//       req.order = order;
+//       // next();
+//     })
+//     .catch(next);
+// });
+
+// // :orderId => get order
+// router.get('/:orderId', (req, res, next) => {
+//   res.status(200).json(req.order);
+// });
+
+// // status/:orderId => get/update address
+// router.get('/status/:orderId', (req, res, next) => {
+//   res.status(200).json(req.order.status);
+// });
+// router.put('/status/:oderId', (req, res, next) => {
+//   req.order.update({
+//     status: req.body.status
+//   })
+//     .then(() => res.status(204).send('Updated Successfully!'))
+//     .catch(next);
+// });
+
+// // address/:orderId => get/update address
+// router.get('/address/:orderId', (req, res, next) => {
+//   res.status(200).json(req.order.address);
+// });
+// router.put('/address/:orderId', (req, res, next) => {
+//   req.order.update({
+//     address: req.body.address
+//   })
+//     .then(() => res.status(204).send('Updated Successfully!'))
+//     .catch(next);
+// });
+
+// // products/:orderId => get/update/delete product
+// router.get('/products/:orderId', (req, res, next) => {
+//   req.order.getProducts()
+//     .then(productList => res.status(200).json(productList))
+//     .catch(next);
+// });
+// router.put('/products/:orderId', (req, res, next) => {
+//   req.order.addProduct(req.body.product)
+//     .then(() => {
+//       res.status(201);
+//       Product.findOne({where: req.body.product});
+//     })
+//     .then(product => {
+//       res.json(product);
+//     })
+//     .catch(next);
+// });
+// router.delete('/products/:orderId/:productId', (req, res, next) => {
+//   Product.findById(req.params.productId)
+//     .then(product => req.order.removeTask(product))
+//     .then(() => res.status(201).json(req.order))
+//     .catch(next);
+// });
+
+// // date/:orderId => get orderDate
+// router.get('/date/:orderId', (req, res, next) => {
+//   res.status(200).json(req.order.createdAt);
+// });

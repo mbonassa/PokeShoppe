@@ -26,19 +26,17 @@ router.get('/', (req, res, next) => {
 });
 
 router.put('/products/:orderId/:productId', (req, res, next) => {
-  Order.findOne({
-    where: {
-      cart: true,
-      id: req.params.orderId
-    }
-  })
+  Order.findById(req.params.orderId)
   .then(order => {
-    Product.findOne(req.params.productId)
+    console.log(order)
+    Product.findById(req.params.productId)
     .then(product => {
-      order.addProduct(product);
-    })
-    .then(product => {
-      res.json(product);
+      console.log(product)
+      order.addProductToOrder(product, product.price)
+      .then(() => {
+        console.log('i got here')
+        res.json(product)
+      })
     })
   })
   .catch(next)

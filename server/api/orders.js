@@ -42,6 +42,18 @@ router.put('/products/:orderId/:productId', (req, res, next) => {
   .catch(next)
 });
 
+//DELETE FROM CART ROUTE
+router.delete('/products/:orderId/:productId', (req, res, next) => {
+  OrderProduct.findOne({where: {
+    productId: req.params.productId,
+    orderId: req.params.orderId
+  }})
+  .then(instance => {
+    instance.destroy();
+  })
+  .catch(next);
+});
+
 router.get('/products/:orderId', (req, res, next) => {
   Order.findById(req.params.orderId)
     .then(order => OrderProduct.findAll({where: {orderId: order.id}}))

@@ -39,11 +39,12 @@ class SingleProduct extends React.Component {
                         <h4 className="pull-right">${product.price}</h4>
                         <h4><a href="#">{product.name}</a>
                         </h4>
-                        <button onClick={this.onProductClick} type="button" class="btn btn-primary btn-sm pull-right">Buy {product.name}!</button>
+                        <p className="pull-right">3 reviews</p>
                         <p>{product.description}</p>
                     </div>
+                    <button onClick={this.onProductClick} type="button" className="btn btn-primary btn-xs pull-right">Buy {product.name}!</button>
                     <div className="ratings">
-                        <p className="pull-right">3 reviews</p>
+
                         <p>
                             <span className="glyphicon glyphicon-star"></span>
                             <span className="glyphicon glyphicon-star"></span>

@@ -81,7 +81,7 @@ router.get('/products/:orderId', (req, res, next) => {
   //   .catch(next);
 
 
-// /****-----   Order Specific    -----*****/
+/****-----   Order Specific    -----*****/
 // router.param('orderId', (req, res, next, id) => {
 //   Order.findById(id)
 //     .then(order => {
@@ -96,17 +96,27 @@ router.get('/products/:orderId', (req, res, next) => {
 //   res.status(200).json(req.order);
 // });
 
-// // status/:orderId => get/update address
-// router.get('/status/:orderId', (req, res, next) => {
-//   res.status(200).json(req.order.status);
-// });
-// router.put('/status/:oderId', (req, res, next) => {
-//   req.order.update({
-//     status: req.body.status
-//   })
-//     .then(() => res.status(204).send('Updated Successfully!'))
-//     .catch(next);
-// });
+// status/:orderId => get/update address
+router.get('/status/:orderId', (req, res, next) => {
+  Order.findById(req.params.orderId)
+    .then(order => res.status(200).json(order.status))
+    .catch(next);
+});
+router.put('/status/:orderId', (req, res, next) => {
+  Order.findById(req.params.orderId)
+  .then(order => {
+    console.log(order.id);
+    console.log(req.body.status);
+    const isCart = req.body.status === 'CREATED' ? true : false
+    console.log(isCart);
+    return order.update({
+      status: req.body.status,
+      cart: isCart
+    })
+      .then(cart => res.status(201).json(cart))
+  })
+  .catch(next);
+});
 
 // // address/:orderId => get/update address
 // router.get('/address/:orderId', (req, res, next) => {

@@ -51,6 +51,12 @@ export const fetchOrders = () => dispatch => {
 
 export const fetchOrder = id => dispatch => {
   axios.get(`/api/orders/${id}`)
-    .then(res => dispatch(init(res.data)))
+    .then(res => dispatch(singleOrder(res.data)))
     .catch(err => console.error('Fetching order by ID unsuccessful', err));
 };
+
+export const changeStatus = (orderId, status) => dispatch => {
+  axios.put(`api/orders/status/${orderId}`, {status})
+    .then(res => dispatch(singleOrder(res.data)))
+    .catch(console.error.bind(console));
+}

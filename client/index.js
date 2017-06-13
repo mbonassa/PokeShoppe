@@ -27,14 +27,14 @@ ReactDOM.render(
     <Router history={browserHistory}>
       <Route path="/" component={Main}>
         <IndexRoute component={Main} />
-        <Route onEnter={requireLogin}>
+
           <Route path="products" component={ProductListContainer} />
           <Route path="products/:id" component={SingleProduct} />
           <Route path="login" component={Login} />
           <Route path="signup" component={Signup} />
           <Route path="dashboard" />
           <Route path="cart" component={CartContainer}/>
-        </Route>
+
         <IndexRedirect to="products" />
       </Route>
     </Router>

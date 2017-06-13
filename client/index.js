@@ -7,6 +7,7 @@ import { Router, Route, browserHistory, IndexRoute, IndexRedirect } from 'react-
 import store from './store';
 import { Main, Login, Signup, UserHome, SingleProduct } from './components';
 import ProductListContainer from './containers/ProductListContainer';
+import CartContainer from './containers/CartContainer';
 import { me } from './reducer/user';
 
 const whoAmI = store.dispatch(me());
@@ -26,11 +27,14 @@ ReactDOM.render(
     <Router history={browserHistory}>
       <Route path="/" component={Main}>
         <IndexRoute component={Main} />
-        <Route path="products" component={ProductListContainer} />
-        <Route path="products/:id" component={SingleProduct} />
-        <Route path="login" component={Login} />
-        <Route path="signup" component={Signup} />
-        <Route path="dashboard" />
+        <Route onEnter={requireLogin}>
+          <Route path="products" component={ProductListContainer} />
+          <Route path="products/:id" component={SingleProduct} />
+          <Route path="login" component={Login} />
+          <Route path="signup" component={Signup} />
+          <Route path="dashboard" />
+          <Route path="cart" component={CartContainer}/>
+        </Route>
         <IndexRedirect to="products" />
       </Route>
     </Router>

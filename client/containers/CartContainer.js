@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchProducts, fetchCart, loadCart } from '../reducer/product';
+import { changeStatus } from '../reducer/order';
 import { Link } from 'react-router';
 
 
@@ -8,11 +9,11 @@ class CartContainer extends React.Component {
 
   constructor (props) {
     super(props);
-
+    this.changingStatus = props.changingStatus.bind(this);
   }
 
   componentDidMount() {
-    this.props.onEnter();
+    this.props.fetchingCart(this.props.user.id);
     this.props.loadingCart(this.props.user.id);
   }
 
@@ -55,11 +56,26 @@ class CartContainer extends React.Component {
                </td>
                <td></td>
                <td></td>
-               <td>{orderTotal}</td>
-            </tr>)
-
+               <td>{orderTotal.toFixed(2)}</td>
+            </tr>
           </tbody>
         </table>
+        <form onSubmit={() => {
+          this.changingStatus(this.props.product.cart.id, 'PROCESSING');
+          location.reload();
+        }} name={name}>
+          <div>
+            <label htmlFor="address"><small>Address</small></label>
+            <input name="address" type="text" />
+          </div>
+          <div>
+            <label htmlFor="creditCard"><small>Credit Card</small></label>
+            <input name="creditCard" type="text" />
+          </div>
+          <div>
+            <button type="submit" className="btn btn-success">Submit Order!</button>
+          </div>
+        </form>
       </div>
     );
   }
@@ -71,8 +87,14 @@ const mapDispatch = dispatch => ({
   onEnter: userId => {
     return dispatch(fetchProducts())
   },
+  fetchingCart: userId => {
+    return dispatch(fetchCart(userId))
+  },
   loadingCart: userId => {
     return dispatch(loadCart(userId));
+  },
+  changingStatus: (orderId, status) => {
+    return dispatch(changeStatus(orderId, status));
   }
 });
 

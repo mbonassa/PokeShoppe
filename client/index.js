@@ -8,6 +8,7 @@ import store from './store';
 import { Main, Login, Signup, UserHome, SingleProduct } from './components';
 import ProductListContainer from './containers/ProductListContainer';
 import CartContainer from './containers/CartContainer';
+import OrderHistoryContainer from './containers/OrderHistoryContainer';
 import { me } from './reducer/user';
 
 const whoAmI = store.dispatch(me());
@@ -32,6 +33,7 @@ ReactDOM.render(
             <Route path="products/:id" component={SingleProduct} />
             <Route path="dashboard" />
             <Route path="cart" component={CartContainer}/>
+            <Route path="orderHistory" component={OrderHistoryContainer}/>
           </Route>
           <Route path="login" component={Login} />
           <Route path="signup" component={Signup} />

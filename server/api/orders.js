@@ -18,6 +18,17 @@ router.put('/:userId', (req, res, next) => {
   .catch(next);
 })
 
+router.get('/userOrders/:userId', (req, res, next) => {
+  Order.findAll({
+    where: {
+      userId: req.params.userId,
+      cart: false
+    }
+  })
+    .then(orderList => res.status(200).json(orderList))
+    .catch(next);
+})
+
 router.get('/', (req, res, next) => {
   Order.findAll({
     where: req.query.status ?

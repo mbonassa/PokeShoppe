@@ -28,6 +28,9 @@ class Navbar extends React.Component {
                       <li>
                           <Link to="cart">Cart</Link>
                       </li>
+                      <li>
+                        <Link to="orderHistory">Past Orders</Link>
+                      </li>
                       {this.props.user.type === 'ADMIN' && <li><Link to="dashboard">Admin Dashboard</Link></li>}
                   </ul>
               </div>

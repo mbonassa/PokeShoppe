@@ -31,13 +31,10 @@ router.get('/', (req, res, next) => {
 router.put('/products/:orderId/:productId', (req, res, next) => {
   Order.findById(req.params.orderId)
   .then(order => {
-    console.log(order)
     Product.findById(req.params.productId)
     .then(product => {
-      console.log(product)
       order.addProductToOrder(product, product.price, req.body.quantity)
       .then(() => {
-        console.log('i got here')
         res.json(product)
       })
     })

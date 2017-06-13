@@ -23,8 +23,6 @@ class ProductItem extends React.Component {
     render() {
     const product = this.props.singleProduct;
 
-    console.log(this.props)
-
     return (
         <div className="col-sm-4 col-lg-4 col-md-4">
             <div className="thumbnail">

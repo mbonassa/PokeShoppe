@@ -55,8 +55,8 @@ export const fetchOrder = id => dispatch => {
     .catch(err => console.error('Fetching order by ID unsuccessful', err));
 };
 
-export const changeStatus = (orderId, status) => dispatch => {
-  axios.put(`api/orders/status/${orderId}`, {status})
+export const changeStatus = (orderId, status, address, creditCard, total_price) => dispatch => {
+  axios.put(`api/orders/status/${orderId}`, {status, address, creditCard, total_price})
     .then(res => dispatch(singleOrder(res.data)))
     .catch(console.error.bind(console));
 }

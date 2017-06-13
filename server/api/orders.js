@@ -105,12 +105,11 @@ router.get('/status/:orderId', (req, res, next) => {
 router.put('/status/:orderId', (req, res, next) => {
   Order.findById(req.params.orderId)
   .then(order => {
-    console.log(order.id);
-    console.log(req.body.status);
     const isCart = req.body.status === 'CREATED' ? true : false
-    console.log(isCart);
     return order.update({
       status: req.body.status,
+      address: req.body.address,
+      total_price: req.body.total_price,
       cart: isCart
     })
       .then(cart => res.status(201).json(cart))

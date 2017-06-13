@@ -18,6 +18,10 @@ const Order = db.define('order', {
     },
     address: {
         type: Sequelize.STRING
+    },
+    total_price: {
+      type: Sequelize.DECIMAL(10, 2),
+      defaultValue: 0.00
     }
 },{
   instanceMethods: {

@@ -11,15 +11,25 @@ class CartContainer extends React.Component {
     super(props);
     this.state = {
       address: '',
-      creditCard: ''
+      creditCard: '',
+      couponCode: '',
     }
     this.changingStatus = props.changingStatus.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleStatusChange = this.handleStatusChange.bind(this);
   }
 
   componentDidMount() {
     this.props.fetchingCart(this.props.user.id);
     this.props.loadingCart(this.props.user.id);
+  }
+
+  handleStatusChange(orderId, status, address, creditCard, total_price){
+    let updatedTotalPrice = total_price;
+    if(this.state.couponCode === 'Hot Geoff'){
+      updatedTotalPrice = (updatedTotalPrice / 2).toFixed(2);
+    }
+    return this.changingStatus(orderId, status, address, creditCard, updatedTotalPrice);
   }
 
   handleChange(name){
@@ -55,7 +65,7 @@ class CartContainer extends React.Component {
                   <td><Link to={`/products/${item.productId}`}>{item.name}</Link></td>
                   <td>{item.price}</td>
                   <td>{item.quantity}</td>
-                  <td>{(+item.price) * (+item.quantity)}</td>
+                  <td>{((+item.price) * (+item.quantity)).toFixed(2)}</td>
                 </tr>
                )
               })
@@ -73,8 +83,8 @@ class CartContainer extends React.Component {
             </tr>
           </tbody>
         </table>
-        <form onSubmit={() => {
-          this.changingStatus(this.props.product.cart.id, 'PROCESSING', this.state.address, this.state.creditCard);
+        <form onSubmit={(e) => {
+          this.handleStatusChange(this.props.product.cart.id, 'PROCESSING', this.state.address, this.state.creditCard, orderTotal);
           location.reload();
         }} name={name}>
           <div>
@@ -84,6 +94,10 @@ class CartContainer extends React.Component {
           <div>
             <label htmlFor="creditCard"><small>Credit Card</small></label>
             <input onChange={this.handleChange('creditCard')} name="creditCard" type="text" value={this.state.creditCard} />
+          </div>
+          <div>
+            <label htmlFor="couponCode"><small>Coupon Code</small></label>
+            <input onChange={this.handleChange('couponCode')} name="couponCode" type="text" value={this.state.couponCode} />
           </div>
           <div>
             <button type="submit" className="btn btn-success">Submit Order!</button>
@@ -106,8 +120,8 @@ const mapDispatch = dispatch => ({
   loadingCart: userId => {
     return dispatch(loadCart(userId));
   },
-  changingStatus: (orderId, status, address, creditCard) => {
-    return dispatch(changeStatus(orderId, status, address, creditCard));
+  changingStatus: (orderId, status, address, creditCard, total_price) => {
+    return dispatch(changeStatus(orderId, status, address, creditCard, total_price));
   }
 });
 

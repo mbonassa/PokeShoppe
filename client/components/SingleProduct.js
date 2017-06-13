@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import { connect } from 'react-redux';
 
-import { fetchProduct } from '../reducer/product';
+import { fetchProduct, addToCart, fetchCart } from '../reducer/product';
 //import { buyProduct } from '???';
 
 
@@ -115,14 +115,16 @@ class SingleProduct extends React.Component {
 
     </div>
     )}
-  onProductClick(){
-    // this.props.purchaseItem(this.props.selectedProduct.id);
 
-  }
+    onProductClick(){
+        this.props.buyProduct(this.props.stateProps.product.cart.id, this.props.selectedProduct.id, 1)
 
-  componentDidMount(){
-    this.props.loadProduct(this.props.params.id);
-  }
+    }
+
+    componentDidMount(){
+        this.props.onEnter(this.props.stateProps.user.id)
+        this.props.loadProduct(this.props.params.id);
+    }
 
 }
 
@@ -130,18 +132,22 @@ class SingleProduct extends React.Component {
 /* -----------------    CONTAINER     ------------------ */
 function mapStateToProps(state){
   return {
-    selectedProduct: state.product.product
+    selectedProduct: state.product.product,
+    stateProps: state
   }
 }
 
 function mapDispatchToProps(dispatch){
   return {
+    onEnter: userId => {
+      dispatch(fetchCart(userId))
+  },
     loadProduct: (id) => {
       dispatch(fetchProduct(id));
     },
-    // purchaseItem: (id) => {
-    //   dispatch(buyProduct(id));
-    // }
+    buyProduct: (cartId, productId, quantity) => {
+      dispatch(addToCart(cartId, productId, quantity))
+    }
   }
 }
 

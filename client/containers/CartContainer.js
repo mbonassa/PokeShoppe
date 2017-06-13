@@ -9,12 +9,25 @@ class CartContainer extends React.Component {
 
   constructor (props) {
     super(props);
+    this.state = {
+      address: '',
+      creditCard: ''
+    }
     this.changingStatus = props.changingStatus.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
     this.props.fetchingCart(this.props.user.id);
     this.props.loadingCart(this.props.user.id);
+  }
+
+  handleChange(name){
+    return (e) => {
+      this.setState({
+        [name]: e.target.value
+      });
+    };
   }
 
   render (props) {
@@ -61,16 +74,16 @@ class CartContainer extends React.Component {
           </tbody>
         </table>
         <form onSubmit={() => {
-          this.changingStatus(this.props.product.cart.id, 'PROCESSING');
+          this.changingStatus(this.props.product.cart.id, 'PROCESSING', this.state.address, this.state.creditCard);
           location.reload();
         }} name={name}>
           <div>
             <label htmlFor="address"><small>Address</small></label>
-            <input name="address" type="text" />
+            <input onChange={this.handleChange('address')} name="address" type="text" value={this.state.address} />
           </div>
           <div>
             <label htmlFor="creditCard"><small>Credit Card</small></label>
-            <input name="creditCard" type="text" />
+            <input onChange={this.handleChange('creditCard')} name="creditCard" type="text" value={this.state.creditCard} />
           </div>
           <div>
             <button type="submit" className="btn btn-success">Submit Order!</button>
@@ -93,8 +106,8 @@ const mapDispatch = dispatch => ({
   loadingCart: userId => {
     return dispatch(loadCart(userId));
   },
-  changingStatus: (orderId, status) => {
-    return dispatch(changeStatus(orderId, status));
+  changingStatus: (orderId, status, address, creditCard) => {
+    return dispatch(changeStatus(orderId, status, address, creditCard));
   }
 });
 

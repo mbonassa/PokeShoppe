@@ -49,11 +49,11 @@ describe('Product Routes', () => {
         Category.create(categoryOne),
         Category.create(categoryTwo)
       ]))
-      .then(([prodOne, prodTwo, prodThree, catOne, catTwo]) => {
-        prodOne.addCategory(catTwo);
-        prodTwo.addCategory(catOne);
-        prodThree.addCategory(catOne);
-      });
+      .then(([prodOne, prodTwo, prodThree, catOne, catTwo]) => Promise.all([
+        prodOne.addCategory(catTwo),
+        prodTwo.addCategory(catOne),
+        prodThree.addCategory(catOne)
+      ]));
   });
   after(() => {
     return db.sync({force:true});

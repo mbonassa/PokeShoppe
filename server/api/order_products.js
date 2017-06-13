@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const orderProduct = require('../db').model('orderProduct');
+const orderProduct = require('../db').model('order_product');
 
 module.exports = router;
 
-//Get quantity for a specific product and a specific order 
+//Get quantity for a specific product and a specific order
 router.get('/quantity/:productId/:orderId', (req, res, next) => {
     orderProduct.findOne({where: {
         productId: req.params.productId,

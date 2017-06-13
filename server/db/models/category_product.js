@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const categoryProduct = db.define('categoryProduct', {
+const categoryProduct = db.define('category_product', {
 
 })
 
-module.exports = categoryProduct; 
+module.exports = categoryProduct;

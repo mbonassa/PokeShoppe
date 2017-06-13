@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const Order = require('../db/models/order');
 const Product = require('../db/models/product');
+const OrderProduct = require('../db/models/order_product');
+const Promise = require('bluebird');
+
 module.exports = router;
 
 // create if not exist, then send instance
@@ -15,6 +18,17 @@ router.put('/:userId', (req, res, next) => {
   .catch(next);
 })
 
+router.get('/userOrders/:userId', (req, res, next) => {
+  Order.findAll({
+    where: {
+      userId: req.params.userId,
+      cart: false
+    }
+  })
+    .then(orderList => res.status(200).json(orderList))
+    .catch(next);
+})
+
 router.get('/', (req, res, next) => {
   Order.findAll({
     where: req.query.status ?
@@ -26,23 +40,57 @@ router.get('/', (req, res, next) => {
 });
 
 router.put('/products/:orderId/:productId', (req, res, next) => {
-  Order.findOne({
-    where: {
-      cart: true,
-      id: req.params.orderId
-    }
-  })
+  Order.findById(req.params.orderId)
   .then(order => {
-    Product.findOne(req.params.productId)
+    Product.findById(req.params.productId)
     .then(product => {
-      order.addProduct(product);
-    })
-    .then(product => {
-      res.json(product);
+      order.addProductToOrder(product, product.price, req.body.quantity)
+      .then(() => {
+        res.json(product)
+      })
     })
   })
   .catch(next)
 });
+
+//DELETE FROM CART ROUTE
+router.delete('/products/:orderId/:productId', (req, res, next) => {
+  OrderProduct.findOne({where: {
+    productId: req.params.productId,
+    orderId: req.params.orderId
+  }})
+  .then(instance => {
+    instance.destroy();
+  })
+  .catch(next);
+});
+
+router.get('/products/:orderId', (req, res, next) => {
+  Order.findById(req.params.orderId)
+    .then(order => OrderProduct.findAll({where: {orderId: order.id}}))
+    .then(orderItems => {
+      return Promise.map(
+        orderItems,
+        item => Product.findById(item.productId)
+      )
+        .then(productList => {
+          const productInfo = [];
+          orderItems.forEach((item, idx) => {
+            productInfo.push(Object.assign({}, {
+              id: item.id,
+              price: item.price,
+              quantity: item.quantity,
+              productId: item.productId,
+              orderId: item.orderId
+            }, {
+              name: productList[idx].name
+            }))
+          });
+          res.status(200).json(productInfo)
+        })
+    })
+    .catch(next);
+})
 
 
   // req.ord.addProduct(req.body.product)
@@ -56,7 +104,7 @@ router.put('/products/:orderId/:productId', (req, res, next) => {
   //   .catch(next);
 
 
-// /****-----   Order Specific    -----*****/
+/****-----   Order Specific    -----*****/
 // router.param('orderId', (req, res, next, id) => {
 //   Order.findById(id)
 //     .then(order => {
@@ -71,17 +119,26 @@ router.put('/products/:orderId/:productId', (req, res, next) => {
 //   res.status(200).json(req.order);
 // });
 
-// // status/:orderId => get/update address
-// router.get('/status/:orderId', (req, res, next) => {
-//   res.status(200).json(req.order.status);
-// });
-// router.put('/status/:oderId', (req, res, next) => {
-//   req.order.update({
-//     status: req.body.status
-//   })
-//     .then(() => res.status(204).send('Updated Successfully!'))
-//     .catch(next);
-// });
+// status/:orderId => get/update address
+router.get('/status/:orderId', (req, res, next) => {
+  Order.findById(req.params.orderId)
+    .then(order => res.status(200).json(order.status))
+    .catch(next);
+});
+router.put('/status/:orderId', (req, res, next) => {
+  Order.findById(req.params.orderId)
+  .then(order => {
+    const isCart = req.body.status === 'CREATED' ? true : false
+    return order.update({
+      status: req.body.status,
+      address: req.body.address,
+      total_price: req.body.total_price,
+      cart: isCart
+    })
+      .then(cart => res.status(201).json(cart))
+  })
+  .catch(next);
+});
 
 // // address/:orderId => get/update address
 // router.get('/address/:orderId', (req, res, next) => {

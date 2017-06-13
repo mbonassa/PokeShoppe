@@ -43,14 +43,20 @@ export default function reducer (state = initialState, action){
 }
 
 // -------- DISPATCHERS -----------
-export const fetchOrders = () => dispatch => {
-  axios.get('/api/orders')
+export const fetchOrders = userId => dispatch => {
+  axios.get(`/api/orders/userOrders/${userId}`)
     .then(res => dispatch(init(res.data)))
     .catch(err => console.error('Fetching orders unsuccessful', err));
 };
 
 export const fetchOrder = id => dispatch => {
   axios.get(`/api/orders/${id}`)
-    .then(res => dispatch(init(res.data)))
+    .then(res => dispatch(singleOrder(res.data)))
     .catch(err => console.error('Fetching order by ID unsuccessful', err));
 };
+
+export const changeStatus = (orderId, status, address, creditCard, total_price) => dispatch => {
+  axios.put(`api/orders/status/${orderId}`, {status, address, creditCard, total_price})
+    .then(res => dispatch(singleOrder(res.data)))
+    .catch(console.error.bind(console));
+}

@@ -8,7 +8,8 @@
     "start-dev": "webpack -w & NODE_ENV=development nodemon server",
     "start-server": "nodemon server",
     "build-client": "webpack",
-    "test": "DATABASE_URL='postgres://localhost:5432/pokeshop-test' NODE_ENV=development mocha -w ./**/*.spec.js --compilers js:babel-register"
+    "test": "DATABASE_URL='postgres://localhost:5432/pokeshop-test' NODE_ENV=development mocha -w ./**/*.spec.js --compilers js:babel-register",
+    "react-test": "mocha ./test/react_tests --watch --compilers js:babel-register"
   },
   "author": "",
   "license": "ISC",
@@ -27,6 +28,7 @@
     "pg-native": "^1.10.1",
     "prop-types": "^15.5.8",
     "react": "^15.4.2",
+    "react-alert": "^2.1.1",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
     "react-router": "^3.0.2",
@@ -49,7 +51,9 @@
     "enzyme": "^2.8.2",
     "mocha": "^3.3.0",
     "node-sass": "^4.5.0",
+    "react-addons-test-utils": "^15.5.1",
     "sass-loader": "^6.0.0",
+    "sinon": "^2.3.4",
     "style-loader": "^0.13.1",
     "supertest": "^3.0.0",
     "supertest-as-promised": "^4.0.2",

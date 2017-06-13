@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import { connect } from 'react-redux';
 
-import { fetchProduct } from '../reducer/product';
+import { fetchProduct, addToCart, fetchCart } from '../reducer/product';
 //import { buyProduct } from '???';
 
 
@@ -39,11 +39,12 @@ class SingleProduct extends React.Component {
                         <h4 className="pull-right">${product.price}</h4>
                         <h4><a href="#">{product.name}</a>
                         </h4>
-                        <button onClick={this.onProductClick} type="button" class="btn btn-primary btn-sm pull-right">Buy {product.name}!</button>
+                        <p className="pull-right">3 reviews</p>
                         <p>{product.description}</p>
                     </div>
+                    <button onClick={this.onProductClick} type="button" className="btn btn-primary btn-xs pull-right">Buy {product.name}!</button>
                     <div className="ratings">
-                        <p className="pull-right">3 reviews</p>
+
                         <p>
                             <span className="glyphicon glyphicon-star"></span>
                             <span className="glyphicon glyphicon-star"></span>
@@ -114,14 +115,16 @@ class SingleProduct extends React.Component {
 
     </div>
     )}
-  onProductClick(){
-    // this.props.purchaseItem(this.props.selectedProduct.id);
 
-  }
+    onProductClick(){
+        this.props.buyProduct(this.props.stateProps.product.cart.id, this.props.selectedProduct.id, 1)
 
-  componentDidMount(){
-    this.props.loadProduct(this.props.params.id);
-  }
+    }
+
+    componentDidMount(){
+        this.props.onEnter(this.props.stateProps.user.id)
+        this.props.loadProduct(this.props.params.id);
+    }
 
 }
 
@@ -129,18 +132,22 @@ class SingleProduct extends React.Component {
 /* -----------------    CONTAINER     ------------------ */
 function mapStateToProps(state){
   return {
-    selectedProduct: state.product.product
+    selectedProduct: state.product.product,
+    stateProps: state
   }
 }
 
 function mapDispatchToProps(dispatch){
   return {
+    onEnter: userId => {
+      dispatch(fetchCart(userId))
+  },
     loadProduct: (id) => {
       dispatch(fetchProduct(id));
     },
-    // purchaseItem: (id) => {
-    //   dispatch(buyProduct(id));
-    // }
+    buyProduct: (cartId, productId, quantity) => {
+      dispatch(addToCart(cartId, productId, quantity))
+    }
   }
 }
 

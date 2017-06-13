@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchProducts } from '../reducer/product';
+import { fetchProducts, fetchCart } from '../reducer/product';
 import ProductItem from '../components/ProductItem';
 
 class ProductListContainer extends React.Component {
@@ -11,11 +11,11 @@ class ProductListContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.props.onEnter()
+    this.props.onEnter();
+    this.props.fetchingCart(this.props.user.id);
   }
 
   render (props) {
-    //const { children, handleClick, loggedIn } = props;
     return (
       <div>
         <ul>
@@ -35,6 +35,9 @@ const mapDispatch = dispatch => ({
   onEnter: () => {
     return dispatch(fetchProducts())
   },
+  fetchingCart: userId => {
+    return dispatch(fetchCart(userId))
+  }
 });
 
 export default connect(mapState, mapDispatch)(ProductListContainer);

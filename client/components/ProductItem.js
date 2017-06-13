@@ -4,6 +4,8 @@ import { Link } from 'react-router';
 import { fetchReviews } from '../reducer/review.js';
 import { addToCart } from '../reducer/product';
 import RatingStar from './RatingStar';
+import {Component} from 'react';
+import AlertContainer from 'react-alert';
 
 /* -----------------    COMPONENT     ------------------ */
 
@@ -20,10 +22,24 @@ class ProductItem extends React.Component {
         this.getReviews(this.props.singleProduct.id);
     }
 
+    alertOptions = {
+        offset: 14,
+        position: 'bottom left',
+        theme: 'dark',
+        time: 5000,
+        transition: 'scale'
+    }
+    
+    showAlert = () => {
+        this.msg.show('Product added to cart', {
+        time: 5000,
+        type: 'success'
+        })
+    }
+
+
     render() {
     const product = this.props.singleProduct;
-
-    console.log(this.props)
 
     return (
         <div className="col-sm-4 col-lg-4 col-md-4">
@@ -39,7 +55,12 @@ class ProductItem extends React.Component {
                     <p className="pull-right">{this.props.review.reviews.length}</p>
                 </div>
                 <RatingStar />
-                <h4><button onClick={() => this.handleClick(this.props.product.cart.id, product.id)}>Add to Cart</button></h4>
+                <div>
+                    <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
+                    <h4><button onClick={() => {
+                        this.showAlert();
+                        this.handleClick(this.props.product.cart.id, product.id, 1)}}>Add to Cart</button></h4>
+                </div>
             </div>
         </div>
         );
@@ -55,14 +76,12 @@ const mapDispatch = dispatch => ({
     getReviews: productId => {
         return dispatch(fetchReviews(productId))
     },
-    handleClick: (cartId, productId) => {
-        return dispatch(addToCart(cartId, productId))
+    handleClick: (cartId, productId, quantity) => {
+        return dispatch(addToCart(cartId, productId, quantity))
+    },
+    showAlert: () => {
+        this.msg.show('Product added to cart', {time: 5000, type: 'success'})
     }
 });
 
 export default connect(mapState, mapDispatch)(ProductItem);
-
-
-
-
-

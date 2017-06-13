@@ -39,7 +39,7 @@ class ProductItem extends React.Component {
                     <p className="pull-right">{this.props.review.reviews.length}</p>
                 </div>
                 <RatingStar />
-                <h4><button onClick={() => this.handleClick(this.props.product.cart.id, product.id)}>Add to Cart</button></h4>
+                <h4><button onClick={() => this.handleClick(this.props.product.cart.id, product.id, 1)}>Add to Cart</button></h4>
             </div>
         </div>
         );
@@ -55,14 +55,9 @@ const mapDispatch = dispatch => ({
     getReviews: productId => {
         return dispatch(fetchReviews(productId))
     },
-    handleClick: (cartId, productId) => {
-        return dispatch(addToCart(cartId, productId))
+    handleClick: (cartId, productId, quantity) => {
+        return dispatch(addToCart(cartId, productId, quantity))
     }
 });
 
 export default connect(mapState, mapDispatch)(ProductItem);
-
-
-
-
-

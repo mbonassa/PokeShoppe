@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const Order = require('../db/models/order');
 const Product = require('../db/models/product');
+const OrderProduct = require('../db/models/order_product');
+const Promise = require('bluebird');
+
 module.exports = router;
 
 // create if not exist, then send instance
@@ -32,7 +35,7 @@ router.put('/products/:orderId/:productId', (req, res, next) => {
     Product.findById(req.params.productId)
     .then(product => {
       console.log(product)
-      order.addProductToOrder(product, product.price)
+      order.addProductToOrder(product, product.price, req.body.quantity)
       .then(() => {
         console.log('i got here')
         res.json(product)
@@ -41,6 +44,33 @@ router.put('/products/:orderId/:productId', (req, res, next) => {
   })
   .catch(next)
 });
+
+router.get('/products/:orderId', (req, res, next) => {
+  Order.findById(req.params.orderId)
+    .then(order => OrderProduct.findAll({where: {orderId: order.id}}))
+    .then(orderItems => {
+      return Promise.map(
+        orderItems,
+        item => Product.findById(item.productId)
+      )
+        .then(productList => {
+          const productInfo = [];
+          orderItems.forEach((item, idx) => {
+            productInfo.push(Object.assign({}, {
+              id: item.id,
+              price: item.price,
+              quantity: item.quantity,
+              productId: item.productId,
+              orderId: item.orderId
+            }, {
+              name: productList[idx].name
+            }))
+          });
+          res.status(200).json(productInfo)
+        })
+    })
+    .catch(next);
+})
 
 
   // req.ord.addProduct(req.body.product)

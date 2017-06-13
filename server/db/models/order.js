@@ -21,12 +21,15 @@ const Order = db.define('order', {
     }
 },{
   instanceMethods: {
-    addProductToOrder: function(product, price){
-      return OrderProduct.create({
+    addProductToOrder: function(product, price, qty){
+      return OrderProduct.findOrCreate({where: {
         orderId: this.id,
         productId: product.id,
-        price: price
-      })
+        price: price,
+      }})
+        .then(itemArr => {
+          if(qty) itemArr[0].update({quantity: itemArr[0].quantity + qty})
+        })
     },
   },
 });

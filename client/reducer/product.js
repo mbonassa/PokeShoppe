@@ -5,12 +5,14 @@ const GET_PRODUCTS = 'GET_PRODUCTS';
 const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
 const GET_CART = 'GET_CART';
 const ADD_TO_CART = 'ADD_TO_CART';
+const GET_CART_PRODUCTS = 'GET_CART_PRODUCTS';
 
 // ------ ACTION CREATORS -------
 export const getProducts = products => ({ type: GET_PRODUCTS, products });
 export const singleProduct = product => ({ type: GET_SINGLE_PRODUCT, product });
 export const fetchingCart = cart => ({ type: GET_CART, cart });
 export const addingToCart = product => ({ type: ADD_TO_CART, product })
+export const getCartProducts = cartProducts => ({ type: GET_CART_PRODUCTS, cartProducts })
 
 // ------- INIT STATE --------
 const initialProductState = {
@@ -44,6 +46,10 @@ export default function reducer (state = initialProductState, action) {
       newState.cartProducts.push(action.product)
       break;
 
+    case GET_CART_PRODUCTS:
+      newState.cartProducts = action.cartProducts;
+      break;
+
     default:
       return state;
   }
@@ -70,11 +76,16 @@ export const fetchCart = userId => dispatch => {
     .catch(err => console.error('Fetching cart unsuccessful', err));
 };
 
-export const addToCart = (cartId, productId) => dispatch => {
-  axios.put(`/api/orders/products/${cartId}/${productId}`)
+export const addToCart = (cartId, productId, quantity) => dispatch => {
+  axios.put(`/api/orders/products/${cartId}/${productId}`, {quantity: quantity})
     .then(res => dispatch(addingToCart(res.data)))
     .catch(err => console.error('Adding to cart unsuccessful', err));
 };
 
-
-
+export const loadCart = (userId) => dispatch => {
+  axios.put(`/api/orders/${userId}`)
+    .then(res => res.data)
+    .then(cart => axios.get(`/api/orders/products/${cart.id}`))
+    .then(res => dispatch(getCartProducts(res.data)))
+    .catch(console.error.bind(console))
+};

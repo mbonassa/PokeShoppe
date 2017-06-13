@@ -12,11 +12,10 @@ class ProductListContainer extends React.Component {
 
   componentDidMount() {
     this.props.onEnter();
-    this.props.fetchingCart(5);
+    this.props.fetchingCart(this.props.user.id);
   }
 
   render (props) {
-    //const { children, handleClick, loggedIn } = props;
     return (
       <div>
         <ul>

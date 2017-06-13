@@ -32,8 +32,7 @@ export default function (state = defaultUser, action) {
 export const me = () =>
   dispatch =>
     axios.get('/auth/me')
-      .then(res =>
-        dispatch(getUser(res.data || defaultUser)));
+      .then(res => dispatch(getUser(res.data || defaultUser)));
 
 export const auth = (email, password, method) =>
   dispatch =>

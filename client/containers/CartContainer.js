@@ -12,7 +12,7 @@ class CartContainer extends React.Component {
     this.state = {
       address: '',
       creditCard: '',
-      couponCode: '',
+      couponCode: 'Hot Geoff',
     }
     this.changingStatus = props.changingStatus.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -40,7 +40,7 @@ class CartContainer extends React.Component {
       });
     };
   }
-  
+
   onDelete (orderId, productId) {
     return () => {
       this.props.deleteItem(orderId, productId);

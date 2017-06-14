@@ -4116,7 +4116,7 @@ module.exports = React;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.loadCart = exports.addToCart = exports.fetchCart = exports.fetchProduct = exports.fetchProducts = exports.getCartProducts = exports.addingToCart = exports.fetchingCart = exports.singleProduct = exports.getProducts = undefined;
+exports.loadCart = exports.removeFromCart = exports.addToCart = exports.fetchCart = exports.fetchProduct = exports.fetchProducts = exports.getCartProducts = exports.removingFromCart = exports.addingToCart = exports.fetchingCart = exports.singleProduct = exports.getProducts = undefined;
 exports.default = reducer;
 
 var _axios = __webpack_require__(41);
@@ -4131,6 +4131,7 @@ var GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
 var GET_CART = 'GET_CART';
 var ADD_TO_CART = 'ADD_TO_CART';
 var GET_CART_PRODUCTS = 'GET_CART_PRODUCTS';
+var REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 
 // ------ ACTION CREATORS -------
 var getProducts = exports.getProducts = function getProducts(products) {
@@ -4144,6 +4145,9 @@ var fetchingCart = exports.fetchingCart = function fetchingCart(cart) {
 };
 var addingToCart = exports.addingToCart = function addingToCart(product) {
   return { type: ADD_TO_CART, product: product };
+};
+var removingFromCart = exports.removingFromCart = function removingFromCart(product) {
+  return { type: REMOVE_FROM_CART, product: product };
 };
 var getCartProducts = exports.getCartProducts = function getCartProducts(cartProducts) {
   return { type: GET_CART_PRODUCTS, cartProducts: cartProducts };
@@ -4184,6 +4188,10 @@ var initialProductState = {
 
     case GET_CART_PRODUCTS:
       newState.cartProducts = action.cartProducts;
+      break;
+
+    case REMOVE_FROM_CART:
+      newState.cartProducts.splice(newState.cartProducts.indexOf(action.product), 1);
       break;
 
     default:
@@ -4230,6 +4238,16 @@ var addToCart = exports.addToCart = function addToCart(cartId, productId, quanti
       return dispatch(addingToCart(res.data));
     }).catch(function (err) {
       return console.error('Adding to cart unsuccessful', err);
+    });
+  };
+};
+
+var removeFromCart = exports.removeFromCart = function removeFromCart(orderId, productId) {
+  return function (dispatch) {
+    _axios2.default.delete('/api/orders/products/' + orderId + '/' + productId).then(function (res) {
+      return dispatch(removingFromCart(res.data));
+    }).catch(function (err) {
+      return console.error('Removing from cart unsuccesful', err);
     });
   };
 };
@@ -16115,11 +16133,12 @@ var CartContainer = function (_React$Component) {
     _this.state = {
       address: '',
       creditCard: '',
-      couponCode: ''
+      couponCode: 'Hot Geoff'
     };
     _this.changingStatus = props.changingStatus.bind(_this);
     _this.handleChange = _this.handleChange.bind(_this);
     _this.handleStatusChange = _this.handleStatusChange.bind(_this);
+    _this.onDelete = _this.onDelete.bind(_this);
     return _this;
   }
 
@@ -16148,9 +16167,20 @@ var CartContainer = function (_React$Component) {
       };
     }
   }, {
+    key: 'onDelete',
+    value: function onDelete(orderId, productId) {
+      var _this3 = this;
+
+      return function () {
+        _this3.props.deleteItem(orderId, productId);
+        _this3.props.fetchingCart(_this3.props.user.id);
+        _this3.props.loadingCart(_this3.props.user.id);
+      };
+    }
+  }, {
     key: 'render',
     value: function render(props) {
-      var _this3 = this;
+      var _this4 = this;
 
       var counter = 1;
       var orderTotal = 0.00;
@@ -16191,7 +16221,8 @@ var CartContainer = function (_React$Component) {
                 'th',
                 null,
                 'Sub Total'
-              )
+              ),
+              _react2.default.createElement('th', null)
             ),
             this.props.product.cartProducts.map(function (item) {
               orderTotal += +item.price * +item.quantity;
@@ -16226,6 +16257,15 @@ var CartContainer = function (_React$Component) {
                   'td',
                   null,
                   (+item.price * +item.quantity).toFixed(2)
+                ),
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  _react2.default.createElement(
+                    'button',
+                    { onClick: _this4.onDelete(item.orderId, item.productId), type: 'button', className: 'btn btn-danger btn-xs' },
+                    'Delete'
+                  )
                 )
               );
             }),
@@ -16263,7 +16303,7 @@ var CartContainer = function (_React$Component) {
         _react2.default.createElement(
           'form',
           { onSubmit: function onSubmit(e) {
-              _this3.handleStatusChange(_this3.props.product.cart.id, 'PROCESSING', _this3.state.address, _this3.state.creditCard, orderTotal);
+              _this4.handleStatusChange(_this4.props.product.cart.id, 'PROCESSING', _this4.state.address, _this4.state.creditCard, orderTotal);
               location.reload();
             }, name: name },
           _react2.default.createElement(
@@ -16342,6 +16382,9 @@ var mapDispatch = function mapDispatch(dispatch) {
     },
     changingStatus: function changingStatus(orderId, status, address, creditCard, total_price) {
       return dispatch((0, _order.changeStatus)(orderId, status, address, creditCard, total_price));
+    },
+    deleteItem: function deleteItem(orderId, productId) {
+      return dispatch((0, _product.removeFromCart)(orderId, productId));
     }
   };
 };
@@ -17894,16 +17937,6 @@ var ProductItem = function (_React$Component) {
                     ),
                     _react2.default.createElement(
                         'div',
-                        { className: 'ratings' },
-                        _react2.default.createElement(
-                            'p',
-                            { className: 'pull-right' },
-                            this.props.review.reviews.length
-                        )
-                    ),
-                    _react2.default.createElement(_RatingStar2.default, null),
-                    _react2.default.createElement(
-                        'div',
                         null,
                         _react2.default.createElement(_reactAlert2.default, _extends({ ref: function ref(a) {
                                 return _this2.msg = a;
@@ -17950,6 +17983,11 @@ var mapDispatch = function mapDispatch(dispatch) {
 };
 
 exports.default = (0, _reactRedux.connect)(mapState, mapDispatch)(ProductItem);
+
+// <div className="ratings">
+//     <p className="pull-right">{this.props.review.reviews.length}</p>
+// </div>
+// <RatingStar />
 
 /***/ }),
 /* 180 */

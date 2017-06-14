@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchProducts, fetchCart, loadCart } from '../reducer/product';
+import { fetchProducts, fetchCart, loadCart, removeFromCart } from '../reducer/product';
 import { changeStatus } from '../reducer/order';
 import { Link } from 'react-router';
 
@@ -17,6 +17,7 @@ class CartContainer extends React.Component {
     this.changingStatus = props.changingStatus.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleStatusChange = this.handleStatusChange.bind(this);
+    this.onDelete = this.onDelete.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +40,14 @@ class CartContainer extends React.Component {
       });
     };
   }
+  
+  onDelete (orderId, productId) {
+    return () => {
+      this.props.deleteItem(orderId, productId);
+      this.props.fetchingCart(this.props.user.id);
+      this.props.loadingCart(this.props.user.id);
+    }
+  }
 
   render (props) {
     let counter = 1;
@@ -55,6 +64,7 @@ class CartContainer extends React.Component {
               <th>Price</th>
               <th>Qty</th>
               <th>Sub Total</th>
+              <th></th>
             </tr>
             {
               this.props.product.cartProducts.map(item => {
@@ -66,6 +76,7 @@ class CartContainer extends React.Component {
                   <td>{item.price}</td>
                   <td>{item.quantity}</td>
                   <td>{((+item.price) * (+item.quantity)).toFixed(2)}</td>
+                  <td><button onClick={this.onDelete(item.orderId, item.productId)} type="button" className="btn btn-danger btn-xs">Delete</button></td>
                 </tr>
                )
               })
@@ -122,6 +133,9 @@ const mapDispatch = dispatch => ({
   },
   changingStatus: (orderId, status, address, creditCard, total_price) => {
     return dispatch(changeStatus(orderId, status, address, creditCard, total_price));
+  },
+  deleteItem: (orderId, productId) => {
+    return dispatch(removeFromCart(orderId, productId));
   }
 });
 

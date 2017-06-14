@@ -6,13 +6,15 @@ const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
 const GET_CART = 'GET_CART';
 const ADD_TO_CART = 'ADD_TO_CART';
 const GET_CART_PRODUCTS = 'GET_CART_PRODUCTS';
+const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 
 // ------ ACTION CREATORS -------
 export const getProducts = products => ({ type: GET_PRODUCTS, products });
 export const singleProduct = product => ({ type: GET_SINGLE_PRODUCT, product });
 export const fetchingCart = cart => ({ type: GET_CART, cart });
-export const addingToCart = product => ({ type: ADD_TO_CART, product })
-export const getCartProducts = cartProducts => ({ type: GET_CART_PRODUCTS, cartProducts })
+export const addingToCart = product => ({ type: ADD_TO_CART, product });
+export const removingFromCart = product => ({ type: REMOVE_FROM_CART, product });
+export const getCartProducts = cartProducts => ({ type: GET_CART_PRODUCTS, cartProducts });
 
 // ------- INIT STATE --------
 const initialProductState = {
@@ -50,6 +52,10 @@ export default function reducer (state = initialProductState, action) {
       newState.cartProducts = action.cartProducts;
       break;
 
+    case REMOVE_FROM_CART:
+      newState.cartProducts.splice(newState.cartProducts.indexOf(action.product), 1);
+      break;
+
     default:
       return state;
   }
@@ -80,6 +86,12 @@ export const addToCart = (cartId, productId, quantity) => dispatch => {
   axios.put(`/api/orders/products/${cartId}/${productId}`, {quantity: quantity})
     .then(res => dispatch(addingToCart(res.data)))
     .catch(err => console.error('Adding to cart unsuccessful', err));
+};
+
+export const removeFromCart = (orderId, productId) => dispatch => {
+  axios.delete(`/api/orders/products/${orderId}/${productId}`)
+    .then(res => dispatch(removingFromCart(res.data)))
+    .catch(err => console.error('Removing from cart unsuccesful', err));
 };
 
 export const loadCart = (userId) => dispatch => {

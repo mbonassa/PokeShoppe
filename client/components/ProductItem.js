@@ -51,10 +51,6 @@ class ProductItem extends React.Component {
                     </h4>
                     <p>{product.description}</p>
                 </div>
-                <div className="ratings">
-                    <p className="pull-right">{this.props.review.reviews.length}</p>
-                </div>
-                <RatingStar />
                 <div>
                     <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
                     <h4><button onClick={() => {
@@ -85,3 +81,8 @@ const mapDispatch = dispatch => ({
 });
 
 export default connect(mapState, mapDispatch)(ProductItem);
+
+                // <div className="ratings">
+                //     <p className="pull-right">{this.props.review.reviews.length}</p>
+                // </div>
+                // <RatingStar />
